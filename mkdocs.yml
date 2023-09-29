@@ -4,17 +4,24 @@ theme:
   language: en
   features:
     - search.suggest
+    - content.code.copy
 
 
 plugins:
   - blog
   - tags
-  
+
 markdown_extensions:
   - attr_list
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      use_pygments: true
+      anchor_linenums: true
+  - pymdownx.superfences
+      
+
 
 extra:
   social:
