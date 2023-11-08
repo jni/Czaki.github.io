@@ -11,61 +11,40 @@ tags:
 draft: true
 ---
 
-# Pinning test dependencies
+# Pinning Test Dependencies
 
 ## Motivation
 
-## Test stability
+### Guaranteeing test stability
 
-I'm one of the core-developers of [napari](https://github.com/napari/napari) project. 
-At the moment of writing, this project has 36 direct dependencies and 116 total dependencies for minimum working dependencies.
-The test uses 165 dependencies in total. Building docs requires 191 dependencies.
+As one of the principal developers of the [napari](https://github.com/napari/napari) project, it is noteworthy to mention that at the time of writing, this project encompasses 36 direct dependencies and 116 total dependencies for minimum operational capability. In terms of testing, it utilizes 165 dependencies in total, while the assembly of documents requires up to 191 dependencies.
 
-This is a lot of dependencies, and their maintainers do not always notice that they will break some use cases. 
-Sometimes, breaking change is required, and providing deprecated API for a long time is impossible.
+Given the substantial volume of these dependencies, there are instances where the maintainers of other libraries might unintentionally disrupt certain API in their packages during updates. These occasional or unintentional disruptions can cause unforeseen complications. On the other hand, there are times when such breakages are deliberate. Providing a backward compatibility layer can be tricky in these situations. Balancing the maintenance of deprecated APIs with both reasonable time constraints and performance requirements often proves unfeasible in the long run. These factors illuminated the need for us to commence pinning our test dependencies.
 
-Before we started pinning test dependencies on average once a month, we had problems with broken tests.
-Many of our contributors are learning programming and open-source contributions.
-So, it is hard for them to understand why tests are failing and whether it is the fault of their changes.
-So next to fixing the test, there is also an explanation to perform additional maintenance work to explain to people what happens.
+Prior to implementing the pinning of test dependencies, we frequently encountered issues with broken tests, roughly about once a month. Many of our contributors are novices in programming and contributing to open-source projects. They often struggle with understanding why tests fail and whether it's an outcome of their modifications. Thus, alongside fixing the test, we have to embark on additional maintenance work to clearly explain the circumstances leading to the failure.
 
+### Enhancing reproducibility in science-based projects
 
-### Reproducibility in science
+Napari, being in its alpha phase, is substantially a science-based project. As such, we occasionally have to make API modifications. Consequently, newer library updates may not be compatible with older code. However, in scientific research, there's often a need to re-run older codes for comparison purposes.
 
-The napari is a scientific project in the alpha phase. So, we regularly break API. 
-An old code may not work with the new library version. 
-However, scientific work sometimes requires running old code to compare results.
-There are projects like [`pypi-timemachine`](https://pypi.org/project/pypi-timemachine/) 
-that create a proxy server that returns PyPi packages until a specific date.
+Luckily, there are project tools like [`pypi-timemachine`](https://pypi.org/project/pypi-timemachine/) that design proxy servers to retrieve PyPi packages up till a specified date. Despite this, providing a definitive list of constraints enables the environment to be easily replicated without resorting to additional tools and avoiding discrepancies that could impact results. Also, this list of constraints simplifies the process of instructing others on how to recreate the environment.
 
-However, providing an explicit list of constraints allows the environment 
-to be reproduced without additional tools, finding differences that may lead to different results.
-Also, constraints make it much easier to explain to people how to reproduce the environment.
+## Distinguishing between pip's Requirements and Constraints
 
+In pip, requirements are a list of packages that need to be installed and could contain version constraints and [extras](https://pip.pypa.io/en/stable/reference/requirement-specifiers/#requirement-specifiers) definitions. On the other hand, constraints are version boundaries for packages that should be considered during the resolution process. 
 
-## Difference between requirements and constraints for pip
-
-The requirements are a list of packages that need to be installed. 
-It could contain version constraints and [extras](https://pip.pypa.io/en/stable/reference/requirement-specifiers/#requirement-specifiers) definition. 
-The constraints are a list of version bounds for packages that should be handled during the resolution process. 
-
-Requirements could be passed using the package name `pip install numpy` or using a file `pip install -r requirements.txt`.
-Constraints could be passed using the file `pip install napari -c constraints.txt` or using environment variables `PIP_CONSTRAINT=constraints.txt pip install napari`. 
-It will not be installed if a package is mentioned in the constraints but not in the requirements.
+Requirements can be passed by using the package name like `pip install numpy`, or via a file like `pip install -r requirements.txt`. Constraints, however, can be passed using the file `pip install napari -c constraints.txt` or via environment variables `PIP_CONSTRAINT=constraints.txt pip install napari`. It's important to note that putting packages in constraints.txt does not install them. It only limits the versions that could be installed.
 
 ## What we need
-
+ 
 Here is a list of our needs:
-
+ 
 1. We need to pin all dependencies for tests and docs.
 2. We need to pin per Python version, as some dependencies do not provide single-version support for all Python versions that we support.
 3. Constraints need to be automatically updated (creating Pull Requests).
 4. As we use upper constraints for some dependencies, we need to be able to upgrade dependencies in any PR, that comes from a forked repository. 
 5. We need to minimize the infrastructure cost for this process.
-
+ 
 ## Our solution
-
+ 
 Here, I will describe our solution to the problem. Today's date is 2023.11.7. Workflow may change over time. The most recent version of the workflow is available [here](https://github.com/napari/napari/blob/main/.github/workflows/upgrade_test_constraints.yml).
-
-
-
