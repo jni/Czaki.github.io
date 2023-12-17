@@ -20,6 +20,10 @@ markdown_extensions:
       use_pygments: true
       anchor_linenums: true
   - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
       
 
 
