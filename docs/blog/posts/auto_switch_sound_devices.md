@@ -23,6 +23,9 @@ Some examples:
 
 In both scenarios, the system will select the USB device instead of the internal sound card. This is not always what one wants.
 
+<!-- more -->
+
+
 ## Solution
 
 !!! note 

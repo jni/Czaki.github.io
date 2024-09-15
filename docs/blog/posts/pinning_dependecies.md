@@ -29,6 +29,10 @@ Napari, being in its alpha phase, is substantially a science-based project. As s
 
 Luckily, there are project tools like [`pypi-timemachine`](https://pypi.org/project/pypi-timemachine/) that design proxy servers to retrieve PyPi packages up till a specified date. Despite this, providing a definitive list of constraints enables the environment to be easily replicated without resorting to additional tools and avoiding discrepancies that could impact results. Also, this list of constraints simplifies the process of instructing others on how to recreate the environment.
 
+
+<!-- more -->
+
+
 ## Distinguishing between pip's Requirements and Constraints
 
 In pip, requirements are a list of packages that need to be installed and could contain version constraints and [extras](https://pip.pypa.io/en/stable/reference/requirement-specifiers/#requirement-specifiers) definitions. On the other hand, constraints are version boundaries for packages that should be considered during the resolution process. 
