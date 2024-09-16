@@ -42,7 +42,7 @@ The error messages vary across different operating systems:
 
 1. Windows `Windows fatal exception: access violation` 
 2. Linux `Segmentation fault (core dumped)` or `Fatal Python error: Aborted` 
-3. macOS (I do not have recent runs to check)
+3. macOS `Fatal Python error: Segmentation fault`
 
 Moreover, this behavior is non-deterministic and may be not reproducible locally. 
 One of observed source of difference is that the CI runs on server version of OS. 
