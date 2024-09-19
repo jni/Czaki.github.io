@@ -42,7 +42,7 @@ The error messages vary across different operating systems:
 
 1. Windows `Windows fatal exception: access violation` 
 2. Linux `Segmentation fault (core dumped)` or `Fatal Python error: Aborted` 
-3. macOS `Fatal Python error: Segmentation fault`
+3. macOS (I do not have recent runs to check)
 
 Moreover, this behavior is non-deterministic and may be not reproducible locally. 
 One of observed source of difference is that the CI runs on server version of OS. 
@@ -161,9 +161,9 @@ However it may increase hardness of contributing to project, as it is custom beh
 
 ### Find active timers after test end
 
-In napari project we have developed a `pytest` fixtures that checks if there are any active `QTimers`, `QThreads`, `QThreadPool` and `QPropertyAnimation` after test end.
+In napari project we have developed a `pytest` fixture that checks if there are any active `QTimers`, `QThreads`, `QThreadPool` and `QPropertyAnimation` after test end.
 
-This method is not perfect as it may not be triggered at every test suite run. So problematic code may be detected after log time.
+This method is not perfect as it may not be triggered at every test suite run. So problematic code may be detected only after a long time.
 
 ```python
 @pytest.fixture(auto_use=True)
@@ -222,7 +222,7 @@ def dangling_qthreads(monkeypatch, qtbot, request):
 ```
 
 It is simplified version of napari fixture. 
-You may see full versions in [napari contest](https://github.com/napari/napari/blob/15c2d7d5ae7c607e3436800328527bd62c421896/napari/conftest.py#L444)
+You may see full versions in [napari conftest](https://github.com/napari/napari/blob/15c2d7d5ae7c607e3436800328527bd62c421896/napari/conftest.py#L444)
 
 For other problematic objects you can use similar approach. There are proper fixtures in same [`conftest.py`](https://github.com/napari/napari/blob/15c2d7d5ae7c607e3436800328527bd62c421896/napari/conftest.py) file.
 
